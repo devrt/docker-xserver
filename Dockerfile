@@ -8,8 +8,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y curl apt-transport-https software-properties-common && \
+    curl https://winswitch.org/gpg.asc | apt-key add - && \
     sh -c 'echo "deb http://winswitch.org/ artful main" > /etc/apt/sources.list.d/winswitch.list' && \
-    curl http://winswitch.org/gpg.asc | apt-key add - && \
 	add-apt-repository universe && \
 	apt-get update && \
     apt-get install --no-install-recommends -y xpra websockify libjs-jquery fluxbox xfonts-base && \
