@@ -1,7 +1,7 @@
 FROM node:12 AS novnc
 
-RUN mkdir -p /novnc && \
-    curl -L https://github.com/novnc/noVNC/archive/v1.1.0.tar.gz | tar xz --strip 1 -C /novnc
+# noVNC with chrome77 workaround patch
+RUN git clone https://github.com/phcapde/noVNC.git /novnc
 
 RUN cd /novnc && \
     npm install && \
@@ -16,8 +16,12 @@ ENV DISPLAY ":0"
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y curl ca-certificates websockify fluxbox xfonts-base xauth x11-xkb-utils xkb-data dbus-x11 supervisor && \
+    apt-get install --no-install-recommends -y curl ca-certificates fluxbox xfonts-base xauth x11-xkb-utils xkb-data dbus-x11 python3 python3-pip supervisor && \
     curl -L https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.9.0.x86_64.tar.gz | tar xz --strip 1 -C / && \
+    pip3 install -U setuptools wheel && \
+    pip3 install -U websockify && \
+    apt-get remove -y python3-pip && \
+    apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
