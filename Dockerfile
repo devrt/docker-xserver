@@ -27,6 +27,7 @@ RUN cp /app/index.html /novnc/
 
 VOLUME /tmp/.X11-unix
 
-EXPOSE 80
+ENV PUBPORT 80
+EXPOSE $PUBPORT
 
 CMD ["supervisord", "-c", "/app/supervisord.conf"]
